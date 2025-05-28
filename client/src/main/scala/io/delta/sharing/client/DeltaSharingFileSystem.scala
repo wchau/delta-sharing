@@ -151,7 +151,8 @@ private[sharing] class DeltaSharingFileSystem extends FileSystem with Logging {
           path.fileSize,
           statistics,
           numRetries,
-          maxRetryDurationMillis
+          maxRetryDurationMillis,
+          Option(getConf.get("spark.delta.sharing.liteswapId"))
         )
       )
     }

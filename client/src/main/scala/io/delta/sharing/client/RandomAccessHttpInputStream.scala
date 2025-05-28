@@ -63,7 +63,8 @@ private[sharing] class RandomAccessHttpInputStream(
     contentLength: Long,
     stats: FileSystem.Statistics,
     numRetries: Int,
-    maxRetryDuration: Long = Long.MaxValue) extends FSInputStream with Logging {
+    maxRetryDuration: Long = Long.MaxValue,
+    liteswapId: Option[String] = None) extends FSInputStream with Logging {
 
   private var closed = false
   private var pos = 0L
@@ -117,6 +118,7 @@ private[sharing] class RandomAccessHttpInputStream(
     val request = new HttpGet(uri)
     val rangeValue = s"bytes=$start-${contentLength - 1L}"
     request.addHeader("Range", rangeValue)
+    liteswapId.map(request.addHeader("x-databricks-traffic-id", _))
     request
   }
 
